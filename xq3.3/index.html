@@ -145,7 +145,6 @@
 	</div>
 
 	<script src="jquery-1.11.2.min.js"></script>
-	<script src="pageswitch.js"></script>
 	<script>
     	$(".li_xiala").click(function(){
      		$(".content").hide();  
@@ -155,11 +154,12 @@
     		$(".content").show();
     		$(".mask").removeClass("movein").addClass("moveout");
     	});
-
-    	$(".min_menu").click(function(){
-    		$(".navbar_ul").toggle();
-    	});
-
+		$(".min_menu").bind('touchstart', function(){	
+		    $(".navbar_ul").toggle();
+		});
+		$("#appdl").bind('touchstart', function(){	
+		    window.location.href='http://a.app.qq.com/o/simple.jsp?pkgname=cn.xq.shareelb';
+		});
 
 		$(function(){
 			$("#container").switchPage({
@@ -169,5 +169,6 @@
 			});
 		});
     </script>
+	<script src="pageswitch.js"></script>
 </body>
 </html>
