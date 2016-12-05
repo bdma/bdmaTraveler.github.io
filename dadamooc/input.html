@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>嗒嗒电子票</title>
+    <title>假票！！！</title>
     <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -471,14 +471,23 @@
                 <button onclick="hcome()">确定</button>
             </div>
         </div>
+        <div class="hallview" id="Fackview" style="display: none" >
+            <div class="hwrap">
+                <h1>假票</h1>
+            </div>
+        </div>
     </div>
     <script>
     function hcome() {
         var textInput = document.getElementById("hinput").value;
         document.getElementById("token").innerHTML = textInput;
         document.getElementById("hallview").style.display = "none";
+        setTimeout(function(){
+	        document.getElementById("Fackview").style.display = "block";
+        },3000)
     }
     </script>
+
 </body>
 
 </html>
