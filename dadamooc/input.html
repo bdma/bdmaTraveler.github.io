@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>嗒嗒电子票</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="css/app.css?rev=8e47d0c6f8fbde4bea2945dfa84a00e1">
+    <script>
+    ! function(a, b) {
+        "use strict";
+        var c = {};
+        ! function() {
+            var i, j, k, l, m, n, d = b.querySelector('meta[name="viewport"]'),
+                e = b.querySelector('meta[name="hotcss"]'),
+                f = a.devicePixelRatio || 1,
+                g = 540,
+                h = 0;
+            f = f >= 3 ? 3 : f >= 2 ? 2 : 1, e && (i = e.getAttribute("content"), i && (j = i.match(/initial\-dpr=([\d\.]+)/), j && (f = parseFloat(j[1])), k = i.match(/max\-width=([\d\.]+)/), k && (g = parseFloat(k[1])), l = i.match(/design\-width=([\d\.]+)/), l && (h = parseFloat(l[1])))), b.documentElement.setAttribute("data-dpr", f), c.dpr = f, b.documentElement.setAttribute("max-width", g), c.maxWidth = g, h && (b.documentElement.setAttribute("design-width", h), c.designWidth = h), m = 1 / f, n = "width=device-width, initial-scale=" + m + ", minimum-scale=" + m + ", maximum-scale=" + m + ", user-scalable=no", d ? d.setAttribute("content", n) : (d = b.createElement("meta"), d.setAttribute("name", "viewport"), d.setAttribute("content", n), b.head.appendChild(d))
+        }(), c.px2rem = function(a, b) {
+            return b || (b = parseInt(c.designWidth, 10)), 320 * parseInt(a, 10) / b / 20
+        }, c.rem2px = function(a, b) {
+            return b || (b = parseInt(c.designWidth, 10)), 20 * a * b / 320
+        }, c.mresize = function() {
+            var d = b.documentElement.getBoundingClientRect().width || a.innerWidth;
+            return c.maxWidth && d / c.dpr > c.maxWidth && (d = c.maxWidth * c.dpr), d ? (b.documentElement.style.fontSize = 20 * d / 320 + "px", c.callback && c.callback(), void 0) : !1
+        }, c.mresize(), a.addEventListener("resize", function() {
+            clearTimeout(c.tid), c.tid = setTimeout(c.mresize, 33)
+        }, !1), a.addEventListener("load", c.mresize, !1), setTimeout(function() {
+            c.mresize()
+        }, 333), a.hotcss = c
+    }(window, document);
+    </script>
+    <!--  -->
+</head>
+
+<body>
+    <div id="app" class="eticket">
+        <div class="main">
+            <header>
+                <time>12月5日 17:46</time>
+                <div class="mark marquee">苏C55601</div>
+            </header>
+            <div class="body">
+                <div class="tokenbox">
+                    <h2 class="token len3" id="token">冯绍峰</h2> <img src="img/grape.png" class="gift index0"><img src="img/banana.png" class="gift index1"><img src="img/mangosteen.png" class="gift index2"><img src="img/apple.png" class="gift index3"><img src="img/watermelon.png" class="gift index4"><img src="img/orange.png" class="gift index5"> </div> <a data-mtaid="eticket.evaluate" class="evaluate">评价一下<i>+20 积分</i></a> </div>
+            <footer>
+                <div class="check-code">验票码：<strong>9422</strong></div>
+                <div class="mobile">手机号码：<strong>13012341234<canvas id="mask" width="284px" height="40px"></canvas></strong></div>
+            </footer>
+        </div>
+        <footer>
+            <a class="ad-anim"><img src="img/car.png"></a>
+            <p class="pkg-version">2.8.7</p>
+        </footer>
+        <div class="hallview" id="hallview" >
+            <div class="hwrap">
+                <!-- <input type="text" id="hinput"> -->
+                <input list="hinputs" name="myBrowser" id="hinput"/>
+                <datalist id="hinputs">
+                    <option value="香水百合">
+					<option value="古堡小镇">
+					<option value="一百分">
+					<option value="偏靠才华">
+					<option value="小龙女">
+					<option value="力争上游">
+					<option value="老人与海">
+					<option value="精诚所至">
+					<option value="一身是胆">
+					<option value="加油">
+					<option value="真心">
+					<option value="瑞雪">
+					<option value="灿若桃花">
+					<option value="鹏程万里">
+					<option value="云卷云舒">
+					<option value="猫屎咖啡">
+					<option value="一鸣惊人">
+					<option value="上交国家">
+					<option value="麦霸">
+					<option value="博闻强识">
+					<option value="巴塞罗那">
+					<option value="长腿欧巴">
+					<option value="美男子">
+					<option value="火影忍者">
+					<option value="欣欣向荣">
+					<option value="千里之行">
+					<option value="凯旋">
+					<option value="浮花浪蕊">
+					<option value="执子之手">
+					<option value="欢聚一堂">
+					<option value="阿拉斯加">
+					<option value="鸡尾酒">
+					<option value="四平八稳">
+					<option value="四月物语">
+					<option value="大吉大利">
+					<option value="丽江古城">
+					<option value="巴士长">
+					<option value="礼帽">
+					<option value="心心相印">
+					<option value="金榜题名">
+					<option value="财经巴士">
+					<option value="陈绮贞">
+					<option value="冰与火">
+					<option value="好心情">
+					<option value="八面春风">
+					<option value="挪威森林">
+					<option value="美酒">
+					<option value="诗和远方">
+					<option value="高级定制">
+					<option value="黄岩岛">
+					<option value="绿色出行">
+					<option value="布达拉宫">
+					<option value="永暑岛">
+					<option value="大唐盛世">
+					<option value="马尔代夫">
+					<option value="平平安安">
+					<option value="国色天香">
+					<option value="健康">
+					<option value="老炮儿">
+					<option value="傻白甜">
+					<option value="棉布长裙">
+					<option value="有志竟成">
+					<option value="天天向上">
+					<option value="极限挑战">
+					<option value="三思而行">
+					<option value="三阳开泰">
+					<option value="摩卡咖啡">
+					<option value="杨颖">
+					<option value="漂亮">
+					<option value="快乐">
+					<option value="宁静">
+					<option value="嗒我上班">
+					<option value="迎刃而解">
+					<option value="李沁">
+					<option value="维纳斯">
+					<option value="我爱嗒嗒">
+					<option value="快快乐乐">
+					<option value="乘车愉快">
+					<option value="我十八岁">
+					<option value="心旷神怡">
+					<option value="妩媚动人">
+					<option value="嗒嗒包车">
+					<option value="嗒嗒男神">
+					<option value="骑士精神">
+					<option value="甄嬛传">
+					<option value="山海经">
+					<option value="和气生财">
+					<option value="一如既往">
+					<option value="破釜沉舟">
+					<option value="洞房花烛">
+					<option value="你好帅">
+					<option value="刘亦菲">
+					<option value="老司机">
+					<option value="闭月羞花">
+					<option value="沉鱼落雁">
+					<option value="万事如意">
+					<option value="拉布拉多">
+					<option value="华丽冒险">
+					<option value="柔情似水">
+					<option value="机智如我">
+					<option value="多读书">
+					<option value="花好月圆">
+					<option value="美神">
+					<option value="落落大方">
+					<option value="纸牌屋">
+					<option value="英俊">
+					<option value="喜剧人">
+					<option value="带你飞">
+					<option value="嗒嗒黄">
+					<option value="鹿晗">
+					<option value="进步">
+					<option value="你好呀">
+					<option value="澳门风云">
+					<option value="五光十色">
+					<option value="可爱">
+					<option value="疯狂动物">
+					<option value="石榴夫妇">
+					<option value="跑男">
+					<option value="我满拼的">
+					<option value="画面太美">
+					<option value="相互理解">
+					<option value="貌美如花">
+					<option value="月光宝盒">
+					<option value="孙悟空">
+					<option value="我的天使">
+					<option value="厚德载物">
+					<option value="奉天承运">
+					<option value="靠脸吃饭">
+					<option value="矢志不移">
+					<option value="风雨无阻">
+					<option value="倪妮">
+					<option value="赤心相待">
+					<option value="双喜临门">
+					<option value="张爱玲">
+					<option value="小鲜肉">
+					<option value="老唱片">
+					<option value="高跟鞋">
+					<option value="非诚勿扰">
+					<option value="芈月传">
+					<option value="助人为乐">
+					<option value="精致妆容">
+					<option value="奋发有为">
+					<option value="迪丽热巴">
+					<option value="美梦成真">
+					<option value="极致浪漫">
+					<option value="恭喜发财">
+					<option value="阿玛吉祥">
+					<option value="卡地亚">
+					<option value="修心养性">
+					<option value="星星之火">
+					<option value="琅琊榜">
+					<option value="天气真好">
+					<option value="我们">
+					<option value="聊天室见">
+					<option value="大幂幂">
+					<option value="美式咖啡">
+					<option value="五福临门">
+					<option value="一马平川">
+					<option value="起来嗨">
+					<option value="寻龙诀">
+					<option value="长乐未央">
+					<option value="皆大欢喜">
+					<option value="黄晓明">
+					<option value="乐善好施">
+					<option value="烛光晚餐">
+					<option value="开卷有益">
+					<option value="女医明妃">
+					<option value="梅花">
+					<option value="长城">
+					<option value="勤奋">
+					<option value="口红">
+					<option value="民族风">
+					<option value="熟能生巧">
+					<option value="丝绸之路">
+					<option value="午后阳光">
+					<option value="马到功成">
+					<option value="水滴石穿">
+					<option value="黄河">
+					<option value="心想事成">
+					<option value="大堡礁">
+					<option value="围城">
+					<option value="长江">
+					<option value="睡着上班">
+					<option value="善良">
+					<option value="百尺竿头">
+					<option value="刘诗诗">
+					<option value="干的不错">
+					<option value="文明">
+					<option value="创意巴士">
+					<option value="巴士生活">
+					<option value="恍若初见">
+					<option value="仁慈">
+					<option value="品学兼优">
+					<option value="天天开心">
+					<option value="身体健康">
+					<option value="和善">
+					<option value="两全其美">
+					<option value="神奇巴士">
+					<option value="回笼觉">
+					<option value="锲而不舍">
+					<option value="与我常在 ">
+					<option value="融会贯通">
+					<option value="四季安康">
+					<option value="团结">
+					<option value="三生有幸">
+					<option value="一往情深">
+					<option value="七星高照">
+					<option value="城会玩">
+					<option value="美人鱼">
+					<option value="我是歌手">
+					<option value="年年有余">
+					<option value="二人同心">
+					<option value="金玉良缘">
+					<option value="众志成城">
+					<option value="宜表白">
+					<option value="学富五车">
+					<option value="祝你好运">
+					<option value="世界真大">
+					<option value="太子妃">
+					<option value="一见如故">
+					<option value="巴士文化">
+					<option value="风雨同舟">
+					<option value="同呼吸">
+					<option value="人定胜天">
+					<option value="才貌双全">
+					<option value="企业支付">
+					<option value="嗒嗒女神">
+					<option value="静待花开">
+					<option value="一帆风顺">
+					<option value="郑爽">
+					<option value="再别康桥">
+					<option value="爱马仕">
+					<option value="哈根达斯">
+					<option value="不加班">
+					<option value="施华洛">
+					<option value="博学多才">
+					<option value="一米阳光">
+					<option value="博古通今">
+					<option value="宜吃美食">
+					<option value="持之以恒">
+					<option value="四季发财">
+					<option value="毅力">
+					<option value="多睡一会">
+					<option value="COACH">
+					<option value="在下良辰">
+					<option value="坐车凭证">
+					<option value="约吗">
+					<option value="周边游">
+					<option value="前程似锦">
+					<option value="巴厘岛">
+					<option value="恋人">
+					<option value="与你同在">
+					<option value="春风得意">
+					<option value="步步高升">
+					<option value="闪电侠">
+					<option value="萌萌哒">
+					<option value="志在四方">
+					<option value="初恋">
+					<option value="帆布鞋">
+					<option value="秦时明月">
+					<option value="肝胆相照">
+					<option value="吃好喝好">
+					<option value="美梦">
+					<option value="梦想">
+					<option value="理想">
+					<option value="高山流水">
+					<option value="杠杠的">
+					<option value="宝宝">
+					<option value="后会有期">
+					<option value="草原">
+					<option value="嗒你回家">
+					<option value="拿铁咖啡">
+					<option value="楚辞">
+					<option value="蓝莲花">
+					<option value="窈窕淑女">
+					<option value="有轨电车">
+					<option value="最帅巴爷">
+					<option value="与子偕老">
+					<option value="风衣">
+					<option value="进取">
+					<option value="牛顿">
+					<option value="我美吗">
+					<option value="不见不散">
+					<option value="全车最美">
+					<option value="美食巴士">
+					<option value="巴士节">
+					<option value="古力娜扎">
+					<option value="霍金">
+					<option value="好好吃饭">
+					<option value="日进斗金">
+					<option value="火锅巴士">
+					<option value="幸运巴士">
+					<option value="一日千里">
+					<option value="一人一座">
+					<option value="创业巴士">
+					<option value="单反">
+					<option value="辛苦了">
+					<option value="拼巴士">
+					<option value="荒野猎人">
+					<option value="英式午茶">
+					<option value="健身巴士">
+					<option value="中央空调">
+					<option value="四小天鹅">
+					<option value="爱因斯坦">
+					<option value="福利">
+					<option value="儒雅">
+					<option value="最萌嗒友">
+					<option value="珊瑚海">
+					<option value="红红火火">
+					<option value="生如夏花">
+					<option value="玛琪雅朵">
+					<option value="勇往直前">
+					<option value="叶问">
+					<option value="意气风发">
+					<option value="一生一世">
+					<option value="知心爱人">
+					<option value="万象更新">
+					<option value="发展">
+					<option value="特斯拉">
+					<option value="牛津包">
+					<option value="香水">
+					<option value="孔子">
+					<option value="灼灼其华">
+					<option value="悠然">
+					<option value="嗒嗒之夜">
+					<option value="优雅知性">
+					<option value="黑巧克力">
+					<option value="一见钟情">
+					<option value="率性而为">
+					<option value="财源广进">
+					<option value="女神节">
+					<option value="神韵">
+					<option value="最强大脑">
+					<option value="相亲巴士">
+					<option value="双宿双栖">
+					<option value="我好想你">
+					<option value="美丽">
+					<option value="巴爷你好">
+					<option value="爱情">
+					<option value="速度激情">
+					<option value="霍建华">
+					<option value="烟雨倾城">
+					<option value="六六大顺">
+					<option value="知音">
+					<option value="知性">
+					<option value="小资情调">
+					<option value="蒸蒸日上">
+					<option value="百炼成钢">
+					<option value="百折不挠">
+					<option value="胡歌">
+					<option value="花千骨">
+					<option value="何以笙箫">
+					<option value="无懈可击">
+					<option value="私人派对">
+					<option value="炸鸡啤酒">
+					<option value="好声音">
+					<option value="自强不息">
+					<option value="尊老爱幼">
+					<option value="百年好合">
+					<option value="颜值爆表 ">
+					<option value="最美巴神">
+					<option value="美容巴士">
+					<option value="福如东海">
+					<option value="岁月静好">
+					<option value="亲师友">
+					<option value="十全十美">
+					<option value="好好开车">
+					<option value="周杰伦">
+					<option value="白雪公主">
+					<option value="卡布奇诺">
+					<option value="喜大普奔">
+					<option value="黄道吉日">
+					<option value="百战百胜">
+					<option value="吉祥">
+					<option value="金牌司机">
+					<option value="爱琴海">
+					<option value="哈士奇">
+					<option value="天天向上">
+					<option value="如意">
+					<option value="一路顺风">
+					<option value="卡农">
+					<option value="北极之光">
+					<option value="蓝天">
+					<option value="香奈儿">
+					<option value="百发百中">
+					<option value="锦绣前程">
+					<option value="白云">
+					<option value="山花烂漫">
+					<option value="手气最佳">
+					<option value="我很快乐">
+					<option value="缘分">
+					<option value="亚洲天团">
+					<option value="天长地久">
+					<option value="宝宝好美">
+					<option value="八拜之交">
+					<option value="嗒嗒巴士">
+					<option value="赤影传说">
+					<option value="冯诺依曼">
+					<option value="谢谢师傅">
+					<option value="蛋糕巴士">
+					<option value="定制巴士">
+					<option value="芭蕾舞">
+					<option value="好喜欢你">
+					<option value="今日有喜">
+					<option value="赚钱养家">
+					<option value="天鹅">
+                </datalist>
+                <button onclick="hcome()">确定</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function hcome() {
+        var textInput = document.getElementById("hinput").value;
+        document.getElementById("token").innerHTML = textInput;
+        document.getElementById("hallview").style.display = "none";
+    }
+    </script>
+</body>
+
+</html>

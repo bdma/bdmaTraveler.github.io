@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>嗒嗒电子票</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="stylesheet" href="css/app.css?rev=8e47d0c6f8fbde4bea2945dfa84a00e1">
+  <script>!function(a,b){"use strict";var c={};!function(){var i,j,k,l,m,n,d=b.querySelector('meta[name="viewport"]'),e=b.querySelector('meta[name="hotcss"]'),f=a.devicePixelRatio||1,g=540,h=0;f=f>=3?3:f>=2?2:1,e&&(i=e.getAttribute("content"),i&&(j=i.match(/initial\-dpr=([\d\.]+)/),j&&(f=parseFloat(j[1])),k=i.match(/max\-width=([\d\.]+)/),k&&(g=parseFloat(k[1])),l=i.match(/design\-width=([\d\.]+)/),l&&(h=parseFloat(l[1])))),b.documentElement.setAttribute("data-dpr",f),c.dpr=f,b.documentElement.setAttribute("max-width",g),c.maxWidth=g,h&&(b.documentElement.setAttribute("design-width",h),c.designWidth=h),m=1/f,n="width=device-width, initial-scale="+m+", minimum-scale="+m+", maximum-scale="+m+", user-scalable=no",d?d.setAttribute("content",n):(d=b.createElement("meta"),d.setAttribute("name","viewport"),d.setAttribute("content",n),b.head.appendChild(d))}(),c.px2rem=function(a,b){return b||(b=parseInt(c.designWidth,10)),320*parseInt(a,10)/b/20},c.rem2px=function(a,b){return b||(b=parseInt(c.designWidth,10)),20*a*b/320},c.mresize=function(){var d=b.documentElement.getBoundingClientRect().width||a.innerWidth;return c.maxWidth&&d/c.dpr>c.maxWidth&&(d=c.maxWidth*c.dpr),d?(b.documentElement.style.fontSize=20*d/320+"px",c.callback&&c.callback(),void 0):!1},c.mresize(),a.addEventListener("resize",function(){clearTimeout(c.tid),c.tid=setTimeout(c.mresize,33)},!1),a.addEventListener("load",c.mresize,!1),setTimeout(function(){c.mresize()},333),a.hotcss=c}(window,document);</script>
+</head>
+<body>
+  <div id="app" :class="['eticket', {'zgt': isZgt, 'driver': isDriver, 'empty': empty}]" v-cloak>
+    <div v-show="isReady" class="main">
+      <header>
+        <time>{{ticket.start_date | formatDate}} {{ticket.start_time | formatTime}}<template v-if="isTranship">-{{ticket.end_time | formatTime}}</template></time>
+        <div :class="['mark', 'marquee', {'small': mark.length > 8}]">{{mark}}</div>
+      </header>
+
+      <div class="body">
+        <div v-if="empty" class="emptybox">电子票已过期或无效</div>
+        <template v-else>
+          <div v-if="isZgt" class="guide">
+            <a @click="jumpto('zgt_travel_guide')">乘车指南</a>
+            <p>请出示 <strong>购票成功短信</strong> 及 <strong>有效身份证件</strong></p>
+            <p>提前到换票处取纸质票乘车</p>
+            <p>（建议您发车前15分种到站候车）</p>
+          </div>
+          <div v-else class="tokenbox">
+            <div v-if="showCheck" class="check-mask">
+              <p v-if="isTranship" class="tips">上车请验票 <a @click="showTranshipGuide = true">乘车指南</a></p>
+              <p v-else class="tips">验票后将无法退票 <a @click="showGuide = true">验票</a></p>
+              <div class="ring">
+                <div class="ring-left"></div>
+                <div class="ring-right"></div>
+                <div class="lock" id="js-lock"><span class="text">长按验票</span></div>
+              </div>
+            </div>
+            <template v-else>
+              <h2 :class="['token', 'len' + token.length]">{{token}}</h2>
+              <img v-for="(val, index) in gifts" :class="['gift', 'index' + index]" :src="val">
+            </template>
+          </div>
+
+          <!-- 非司机端 -->
+          <template v-if="!isDriver">
+            <!-- 直通车 -->
+            <div v-if="isZtc" :class="['countbar', {'show-evaluate': showEvaluate}]">
+              <span class="count">票数 <strong>{{ticket.ticket_number}}</strong> 张</span>
+              <a v-if="showEvaluate" class="evaluate" data-mtaid="eticket.evaluate" @click="goEvaluate">{{evaluate.is_evaluated == 1 ? '评价一下' : '已评价'}}<i v-if="evaluate.is_evaluated == 1">+{{evaluate.point}} 积分</i></a>
+            </div>
+
+            <!-- 接驳线 -->
+            <div v-if="isTranship" class="refundbar">
+              <template v-if="showCheck">
+                <a class="refund-rules" @click="jumpto('shuttle_refund_rules')">接驳线退票规则</a>
+                <a class="refund-btn" @click="refund">退票</a>
+              </template>
+              <template v-else>
+                <a class="tips">您的班车每<em>{{ticket.frequency | sec2mim}}</em>分钟<em>1</em>班次</a>
+                <a class="guide" @click="showTranshipGuide = true">乘车指南</a>
+              </template>
+            </div>
+
+            <!-- 上下班应急退 -->
+            <div v-if="showRefund && showCheck" class="refundbar">
+              <a class="refund-rules" data-mtaid="eticket.links.quick_refund_rules" @click="jumpto('emergency_refund_rules')">了解应急退</a>
+              <a :class="['refund-btn', disRefund ? 'disabled' : '']" data-mtaid="eticket.quick_refund" @click="quickRefund">应急退票</a>
+            </div>
+
+            <!-- 上下班乘车评价 -->
+            <a v-if="isBus && showEvaluate && !showCheck" class="evaluate" data-mtaid="eticket.evaluate" @click="goEvaluate">{{evaluate.is_evaluated == 1 ? '评价一下' : '已评价'}}<i v-if="evaluate.is_evaluated == 1">+{{evaluate.point}} 积分</i></a>
+          </template>
+        </template>
+      </div>
+
+      <footer v-if="isZgt">
+        <div class="mobile">乘客电话：<strong>{{mobile}}</strong></div>
+        <div class="hotline">咨询电话：<a href="tel:4008822322"><strong>4008822322</strong></a>(国内) <a href="tel:200303030"><strong>200303030</strong></a>(香港)</div>
+      </footer>
+      <footer v-else>
+        <!-- <div v-if="isDriver" class="mobile">乘客手机号 <strong>XXX</strong></div> -->
+        <template v-if="!isDriver">
+          <div class="check-code">验票码：<strong>{{ticket.ticket_identifier}}</strong></div>
+          <div class="mobile">手机号码：<strong>{{mobile}}<canvas id="mask"></canvas></strong></div>
+        </template>
+        <a v-if="ad.left_button.image_url" class="ad-btn" @click="jumpStat(ad.left_button)" @load="showStat(ad.left_button)"><img :src="ad.left_button.image_url"></a>
+      </footer>
+    </div>
+
+    <!-- 电子票页脚 -->
+    <footer v-show="isReady">
+      <a v-if="!showCheck" class="ad-anim" @click="jumpStat(ad.bottom_animate)"><img :src="ad.bottom_animate.image_url || 'img/car.png'" @load="showStat(ad.bottom_animate)"></a>
+      <p class='pkg-version'>{{pkgVersion}}</p>
+    </footer>
+
+    <!-- 弹窗 -->
+    <modal v-if="showGuide" @close="closeGuide">
+      <h2 slot="header">小嗒教您快速验票上车</h2>
+      <dl slot="body">
+        <dt>上车时长按验票</dt>
+        <dd>（验票后将不可退票）</dd>
+        <dt>出示已验电子票</dt>
+        <dd>（司机查验班次是否正确）</dd>
+        <dt>愉快乘车</dt>
+        <dd>（有任何体验问题记得告诉小嗒哦）</dd>
+      </dl>
+      <a slot="footer" class="closer" @click="closeGuide">X</a>
+    </modal>
+    <modal v-if="showTranshipGuide" @close="closeTranshipGuide">
+      <h2 slot="header">小嗒教您如何乘车</h2>
+      <dl slot="body">
+        <dt v-if="isTranship">上车前长按验票</dt>
+        <dd>（验票后将不可退票）</dd>
+        <dt>等待巴士到达</dt>
+        <dd>（发车时间段内可乘坐当天任1班次）</dd>
+        <dt>出示已验电子票</dt>
+        <dd>（司机查验班次是否正确）</dd>
+        <dt>愉快乘车</dt>
+        <dd>（有任何体验问题记得告诉小嗒哦）</dd>
+      </dl>
+      <a slot="footer" class="closer" @click="closeTranshipGuide">X</a>
+    </modal>
+    <modal v-if="showWarn" class="check-warn" @close="closeWarn">
+      <h2 slot="header">温馨提醒</h2>
+      <div slot="body">
+        <p>验票后不可退票，建议上车时再进行验票</p>
+        <label for="nomore-warn"><input type="checkbox" id="nomore-warn" value="1" v-model="nomoreWarn">以后不再进行提醒</label>
+      </div>
+      <template slot="footer">
+        <a class="cancel" @click="closeWarn">关闭提示</a>
+        <a class="continue" @click="closeWarn('continue')">继续验票</a>
+      </template>
+    </modal>
+  </div>
+
+  <!-- 弹窗组件模板 -->
+  <script type="text/x-template" id="modal">
+    <div class="modal" transition="modal">
+      <div class="wrapper" @click.self="$emit('close')">
+        <div class="container">
+          <div class="header">
+            <slot name="header"></slot>
+          </div>
+          <div class="body">
+            <slot name="body"></slot>
+          </div>
+          <div class="footer">
+            <slot name="footer"></slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script src="js/app.js?rev=62ffdc11556691b86afe48561ff72a73"></script>
+</body>
+</html>
